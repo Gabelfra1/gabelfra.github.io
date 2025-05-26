@@ -1,14 +1,14 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "Maverick",
-  "home_page_url": "http://localhost:1313/kitchen/",
-  "feed_url": "http://localhost:1313/kitchen/feed.json",
+  "title": "Francesco's kitchen",
+  "home_page_url": "//localhost:1313/",
+  "feed_url": "//localhost:1313/feed.json",
   "description": "A minimal hugo theme focus on content",
-  "favicon": "http://localhost:1313/kitchen//assets/favicon.ico",
+  "favicon": "//localhost:1313//assets/favicon.ico",
   "expired": false,
   "author": {
     "name": "Calvin Tran",
-    "url": "http://localhost:1313/kitchen/"
+    "url": "//localhost:1313/"
   },
   "items": [
     
@@ -21,12 +21,12 @@
       "summary": "",
       "content_text": "",
       "content_html": "",
-      "url": "http://localhost:1313/kitchen/posts/example-content/",
+      "url": "//localhost:1313/posts/example-content/",
       "date_published": "25116-25-09T110:2525:00+00:00",
       "date_modified": "25116-25-09T110:2525:00+00:00",
       "author": {
         "name": "Calvin Tran",
-        "url": "http://localhost:1313/kitchen/"
+        "url": "//localhost:1313/"
       }
     }
     

@@ -1,6 +1,6 @@
-baseURL = 'https://gabelfra1.github.io/'
+baseURL = 'kitchen'
 languageCode = 'en-gb'
-title = 'Maverick'
+title = "Francesco's kitchen"
 theme = 'maverick'
 
 [permalinks]
