@@ -1,6 +1,6 @@
 baseURL = 'https://gabelfra1.github.io/'
 languageCode = 'en-gb'
-title = 'Francesco'
+title = 'Francesco Gabellini'
 theme = 'maverick'
 
 [permalinks]
