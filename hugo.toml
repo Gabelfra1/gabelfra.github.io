@@ -1,4 +1,4 @@
-baseURL = 'kitchen'
+baseURL = 'https://gabelfra1.github.io/'
 languageCode = 'en-gb'
 title = "Francesco's kitchen"
 theme = 'maverick'
