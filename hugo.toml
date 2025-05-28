@@ -1,20 +1,34 @@
 baseURL = 'https://gabelfra1.github.io/'
 languageCode = 'en-gb'
-title = "Francesco's kitchen"
+title = 'Francesco'
 theme = 'maverick'
 
 [permalinks]
   pages = "/:slug"
-  
+
+[params]
+  logo = '/assets/favicon.ico'
+  description = "A minimal hugo theme focus on content"
+  author = 'Calvin Tran'
+  items = 10
+
+  [params.comments]
+    enabled = true
+    githubRepo = 'canhtran/maverick'
+    theme = 'github-light'
+
+
 [menu]
   [[menu.main]]
     identifier = "about"
     name = "About"
     url = "/about/"
+    weight = "-200"
   [[menu.main]]
     identifier = "posts"
-    name = "Posts"
+    name = "Post"
     url = "/posts/"
+    weight = -110
 
 [markup]
   [markup.goldmark.renderer]
