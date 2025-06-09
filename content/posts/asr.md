@@ -147,5 +147,5 @@ By combining Pyannote's precise speaker diarization with WhisperX's advanced for
 
 - [PyAnnote](https://github.com/pyannote/pyannote-audio)
 - [Whisper](https://github.com/openai/whisper)
-- [WhisperX](https://github.com/m-bain/whisperX) https://github.com/m-bain/whisperX
+- [WhisperX](https://github.com/m-bain/whisperX)
 
