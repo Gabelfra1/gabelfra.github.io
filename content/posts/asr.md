@@ -7,20 +7,20 @@ tags:
 - Whisper
 ---
 
-Speaker Diarization answers the question "who spoke when?" by segmenting an audio stream based on speaker identity, while transcription tells us "what was said."
+Speaker Diarization answers the question "who spoke when?" by segmenting an audio stream based on speaker identity, while transcription tells us "what was said".
 
 ### Introducing the Key Components
 
- - **Whisper** Automatic Speech Recognition model that converts speech to text.
+ - **Whisper**: Automatic Speech Recognition model that converts speech to text.
  - **Pyannote.audio**: Deep neural network for speaker diarization.
  - **WhisperX**: Optimized Whisper variant that integrates multiple components.
 
 
 ### A Step-by-Step Implementation Guide
 
-This section provides a practical guide to implementing speaker diarization using WhisperX, Pyannote, and Whisper.While highlighting WhisperX's advantages. For our audio sample, we can grab a segment from pretty much any free podcast out there – let's go for a clip from [Lex Friedman](https://lexfridman.com/podcast/), one of my personal favorites.
+This section provides a practical guide to implementing speaker diarization using WhisperX, Pyannote, and Whisper, while highlighting WhisperX's advantages. For our audio sample, we can grab a segment from pretty much any free podcast out there – let's go for a clip from [Lex Friedman](https://lexfridman.com/podcast/), one of my personal favorites.
 
-#### Set up
+#### Setup
 
 Before diving into the code, it is essential to prepare your development environment.
 Make sure you have a Python virtual environment set up, it would also be beneficial to have access to a GPU compatible with CUDA for acceleration.
@@ -30,14 +30,14 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-To utilize Pyannote.audio models for diarization through WhisperX, you will need a Hugging Face access token with 'read' permissions, for which you must accept the user agreements for the pyannote/segmentation-3.0 and pyannote/speaker-diarization-3.1 models on the Hugging Face website : [HuggingFace](https://github.com/pyannote/pyannote-audio)
+To utilize Pyannote.audio models for diarization through WhisperX, you will need a Hugging Face access token with 'read' permissions, for which you must accept the user agreements for the pyannote/segmentation-3.0 and pyannote/speaker-diarization-3.1 models on the Hugging Face website: [HuggingFace](https://github.com/pyannote/pyannote-audio)
 
 Finally we can pip install our dependencies:
 
 ```bash
 python -m pip  install  torch  numpy pyannote.audio  whisper  whisperx
 ```
-First, we'll import the necessary libraries, configure our Hugging Face token and file path.
+First, we'll import the necessary libraries, and configure our Hugging Face token and file path.
 
 ```python 
 import torch
@@ -54,7 +54,7 @@ DEVICE
 ```
 #### Diarization
 
-In the first code snippet, a pre-trained pyannote model is utilized to determine when different speakers are active in an audio recording. The output of this speaker segmentation can be viewed via the print statement :
+In the first code snippet, a pre-trained pyannote model is utilized to determine when different speakers are active in an audio recording. The output of this speaker segmentation can be viewed via the print statement:
 
 ```python 
 #Initialize pipeline
