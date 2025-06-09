@@ -7,29 +7,35 @@ tags:
 - Whisper
 ---
 
-Speaker Diarization answers "who spoke when?" by segmenting an audio stream based on speaker identity, while transcription tells us "what was said."
+Speaker Diarization answers the question "who spoke when?" by segmenting an audio stream based on speaker identity, while transcription tells us "what was said."
 
-### Introducing the Key components
+### Introducing the Key Components
 
  - **Whisper** Automatic Speech Recognition model that converts speech to text.
  - **Pyannote.audio**: Deep neural network for speaker diarization.
- - **WhisperX**: An optimized Whisper variant that integrates multiple components.
+ - **WhisperX**: Optimized Whisper variant that integrates multiple components.
 
 
 ### A Step-by-Step Implementation Guide
 
-This section provides a practical guide to implementing speaker diarization using WhisperX, Pyannote, and Whisper. llustrating the practical steps and highlighting WhisperX's advantages. For our audio example, we can grab a segment from pretty much any free podcast out there – how about a clip from a Lex Fridman podcast,one of my personal favourite.
+This section provides a practical guide to implementing speaker diarization using WhisperX, Pyannote, and Whisper.While highlighting WhisperX's advantages. For our audio sample, we can grab a segment from pretty much any free podcast out there – let's go for a clip from [Lex Friedman](https://lexfridman.com/podcast/), one of my personal favorites.
 
-#### Setting up
+#### Set up
 
 Before diving into the code, it is essential to prepare your development environment.
-Ensure you have a Python 3.10 virtual environment set up, it would be beneficial to have access to a GPU compatible with CUDA for acceleration.
-To utilize Pyannote.audio models for diarization through WhisperX, you will need a Hugging Face access token with 'read' permissions, you must accept the user agreements for the pyannote/segmentation-3.0 and pyannote/speaker-diarization-3.1 models on the Hugging Face website : [HuggingFace](https://github.com/pyannote/pyannote-audio)
-
-Finally we can pip install our dependecies:
+Make sure you have a Python virtual environment set up, it would also be beneficial to have access to a GPU compatible with CUDA for acceleration.
 
 ```bash
-pip  install  torch  numpy  whisperx  pyannote.audio
+python -m venv venv
+source venv/bin/activate
+```
+
+To utilize Pyannote.audio models for diarization through WhisperX, you will need a Hugging Face access token with 'read' permissions, for which you must accept the user agreements for the pyannote/segmentation-3.0 and pyannote/speaker-diarization-3.1 models on the Hugging Face website : [HuggingFace](https://github.com/pyannote/pyannote-audio)
+
+Finally we can pip install our dependencies:
+
+```bash
+python -m pip  install  torch  numpy pyannote.audio  whisper  whisperx
 ```
 First, we'll import the necessary libraries, configure our Hugging Face token and file path.
 
@@ -108,7 +114,7 @@ While a simple timestamp overlap can lead to significant inaccuracies in alignin
   <img src="../../images/whisperx.png" alt="whisperx">
 </figure>
 
-This script first uses the pyannote library to figure out who is speaking when in an audio file (that's the "diarization" part). Then, it takes a pre-generated text transcript (script["segments"]) and uses WhisperX's alignment models to precisely match each word in the transcript to its exact timing in the audio. Finally, it combines the speaker information from pyannote with the word-level timings from WhisperX to produce a highly accurate, time-stamped transcript where each spoken word is correctly attributed to the right speaker.
+This script first uses the pyannote library to identify speakers and time of enunciation in an audio file (that's the "diarization" part). Then, it takes a pre-generated text transcript (script["segments"]) and uses WhisperX's alignment models to precisely match each word in the transcript to its exact timing in the audio. Finally, it combines the speaker information from pyannote with the word-level timings from WhisperX to produce a highly accurate, time-stamped transcript where each spoken word is correctly attributed to the right speaker.
 
 ```python 
 # Initialize a diarization pipeline
@@ -135,7 +141,7 @@ for start, end, text, speaker in [i.values() for i in transcribed]:
     print(start, end, speaker, text)
 ```
 
-By combining Pyannote's precise speaker diarization with WhisperX's advanced forced alignment, this guide demonstrates how to generate highly accurate, speaker-attributed transcripts. This approach significantly surpasses basic timestamp matching, ensuring precise "who spoke when and what was said" information.
+By combining Pyannote's precise speaker diarization with WhisperX's advanced forced alignment, this guide demonstrates how to generate highly accurate, speaker-attributed transcripts. This approach significantly surpasses basic timestamp matching, ensuring precise information about "who spoke when and what was said".
 
 #### References : 
 
