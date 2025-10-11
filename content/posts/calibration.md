@@ -3,8 +3,8 @@ author: "Francesco Gabellini"
 title: "LLM are way too confident"
 date: "2025-10-11"
 tags: 
-- OpenAI
-- Probabilities
+- LLM
+- Calibration
 ---
 
 ### The Paradox of High Accuracy and Low Reliability
@@ -141,7 +141,7 @@ However the model exhibits **severe miscalibration**, oscillating between being 
 
 #### Can we fix it ?
 
-To address the observed miscalibration, we applied a traditional post-processing technique: fitting a second regression model to map the estimated scores to true probabilities. Specifically, we leveraged the [Isotinic regression](https://scikit-learn.org/stable/modules/calibration.html) from the scikit-learn package, a common method for recalibrating uncalibrated estimators.
+To address the observed miscalibration, we applied a traditional post-processing technique: fitting a second regression model to map the estimated scores to true probabilities. Specifically, we leveraged the [Isotonic regression](https://scikit-learn.org/stable/modules/calibration.html) from the scikit-learn package, a common method for recalibrating uncalibrated estimators.
 
 However, isolating the results for a specific class, such as the 'hardware' (mac) category, clearly shows the limitations of this approach:
 
