@@ -9,17 +9,17 @@ tags:
 
 ### The Paradox of High Accuracy and Low Reliability
 
-In this article, we'll explore GPT's impressive ability to achieve high zero-shot performance on a classification tasks: [LLM are multitask learner](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) and at the same time being way [overconfident](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) on all of their responses.
+In this article, we'll explore LLM's impressive ability to achieve [high zero-shot performance on a classification tasks](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) and at the same time being way too [overconfident](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) on all of their responses.
 
-Calibration it ensures the model "knows what it doesn't know." 
-For instance, if a model assigns a probability of 0.8 (or 80% confidence) to a collection of predictions, we expect that 80% of those specific predictions will be correct in reality. When a model is perfectly calibrated, you can directly trust its confidence scores as an honest statement of its likelihood of being right.
+**Calibration** it ensures that the model "knows what it doesn't know." 
+For instance, if a model assigns a probability of 70% to a collection of predictions, we expect that 70% of those specific predictions will be correct in reality. When a model is perfectly calibrated, you can directly trust its confidence scores as an honest statement of its likelihood of being right.
 
-GPT can correctly classify a sample without any prior fine-tuning, its confidence scores often don't accurately reflect the likelihood of its predictions being correct. This disparity between performance and reliability is a significant challenge for deploying these models in real-world applications.
+GPT can easily classify a sample without any prior fine-tuning but its confidence scores often don't accurately reflect the likelihood of its predictions being correct. This disparity between performance and reliability is a significant challenge for deploying these models in real-world applications.
 
 
 #### The data
 
-The dataset for this article is sourced from the readily accessible scikit-learn (sklearn) open datasets. This is a classic NLP classification problem where the raw data consists of various news articles, and the original target variable maps to 20 distinct article topics.
+The dataset for this article is sourced from scikit-learn (sklearn) open datasets. This is a classic NLP classification problem where the raw data consists of various news articles, and the target variable maps to 20 distinct article topics.
 
 For the sake of simplifying this demonstration, we filtered the original corpus. Our reduced dataset now exclusively comprises articles belonging to three specific categories: 'mac', 'motorcycles', and 'baseball'.
 
@@ -62,8 +62,8 @@ vectors_test = vectorizer.transform(newsgroups_test.data)
 pred = clf.predict(vectors_test)
 ```
 
-Our Naive Bayes baseline model achieved a respectable 85% F1 score. 
-Crucially, it also demonstrated a decently calibrated output, meaning its predicted probabilities are a reasonably accurate reflection of the true  likelihood for its classifications.
+Our Naive Bayes baseline model achieved a respectable **85% F1 score**. 
+Crucially, it also demonstrated a decently calibrated output:
 
 <figure>
   <img src="../../images/baseline_calibration.png" alt="baseline_calibration">
@@ -72,7 +72,7 @@ Crucially, it also demonstrated a decently calibrated output, meaning its predic
 
 #### The AI model
 
-Now we move to a modern approach for this NLP task: zero-shot classification. 
+Now we move to a modern approach for this NLP task: **zero-shot classification**. 
 By leveraging the [OpenAI API](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) we completely bypass the need for any training. Instead, we tap directly into the vast pre-training knowledge of GPT and use a prompt to instruct the model to classify the news articles. This method allows us to achieve high performance without a single training loop.
 
 This Python snippet defines a function, get_api_metrics_data, which performs zero-shot classification on a given news article using the OpenAI GPT-4o-mini model. It uses a system prompt to enforce classification into one of three specified categories (simplified_names) and is configured to return log probabilities for the top tokens (logprobs=True, top_logprobs=3) [OpenAI LogProb cookbook](https://cookbook.openai.com/examples/using_logprobs). 
@@ -131,8 +131,8 @@ def get_api_metrics_data(article):
 ```
 
 
-Our AI model demonstrated an impressive F1 score of 95%, significantly outperforming the Naive Bayes baseline by a solid 10% margin. 
-However the model exhibits severe miscalibration, oscillating between being overconfident when its predictions are likely wrong, and being overly pessimistic (underconfident) when its predictions are correct.
+Our AI model demonstrated an impressive **F1 score of 95%**, significantly outperforming the Naive Bayes baseline by a solid 10% margin. 
+However the model exhibits **severe miscalibration**, oscillating between being overconfident when its predictions are likely wrong, and being overly pessimistic (underconfident) when its predictions are correct :
 
 
 <figure>
@@ -144,6 +144,7 @@ However the model exhibits severe miscalibration, oscillating between being over
 To address the observed miscalibration, we applied a traditional post-processing technique: fitting a second regression model to map the estimated scores to true probabilities. Specifically, we leveraged the [Isotinic regression](https://scikit-learn.org/stable/modules/calibration.html) from the scikit-learn package, a common method for recalibrating uncalibrated estimators.
 
 However, isolating the results for a specific class, such as the 'hardware' (mac) category, clearly shows the limitations of this approach:
+
 <figure>
   <img src="../../images/openai_calibration_plot_isotonic_mac.png" alt="baseline_calibration">
 </figure>
@@ -158,6 +159,6 @@ In most practical applications, simply providing a prediction label is insuffici
 
 ### Conclusion 
 
-While Large Language Models (LLMs) like GPT offer incredible zero-shot performance on NLP tasks, completely eliminating the need for training data, they suffer from a fundamental practical limitation: they currently lack an effective and reliable mechanism for measuring output uncertainty and calibration. 
+While Large Language Models (LLMs) like GPT offer incredible zero-shot performance on NLP tasks, completely eliminating the need for training data, they suffer from a fundamental practical limitation: **they currently lack an effective and reliable mechanism for measuring output uncertainty and calibration**. 
 
 This absence means that in any use case where decision-making critically depends on a trustworthy measure of confidence or risk, modern LLMs become a terrible choice. Instead, practitioners should rely on simpler, well-calibrated Machine Learning models, even though these require the initial investment of collecting and training on labeled data. The superior performance of the LLM isn't always  worth the cost of unreliable risk assessment.
