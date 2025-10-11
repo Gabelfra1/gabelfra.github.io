@@ -1,7 +1,7 @@
 ---
 author: "Francesco Gabellini"
 title: "LLM are way too confident"
-date: "2025-10-12"
+date: "2025-10-11"
 tags: 
 - OpenAI
 - Probabilities
@@ -69,7 +69,6 @@ Crucially, it also demonstrated a decently calibrated output, meaning its predic
   <img src="../../images/baseline_calibration.png" alt="baseline_calibration">
 </figure>
 
-https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/
 
 #### The AI model
 
