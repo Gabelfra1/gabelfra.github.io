@@ -9,7 +9,7 @@ tags:
 
 ### The Paradox of High Accuracy and Low Reliability
 
-In this article, we'll explore LLM's impressive ability to achieve [high zero-shot performance on a classification tasks](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) and at the same time being way too [overconfident](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) on all of their responses.
+In this article, we'll explore LLM's impressive ability to achieve [high zero-shot performance on a classification tasks](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) and at the same time being way too [overconfident](https://arxiv.org/abs/2505.02151) on all of their responses.
 
 **Calibration** it ensures that the model "knows what it doesn't know." 
 For instance, if a model assigns a probability of 70% to a collection of predictions, we expect that 70% of those specific predictions will be correct in reality. When a model is perfectly calibrated, you can directly trust its confidence scores as an honest statement of its likelihood of being right.
@@ -73,7 +73,7 @@ Crucially, it also demonstrated a decently calibrated output:
 #### The AI model
 
 Now we move to a modern approach for this NLP task: **zero-shot classification**. 
-By leveraging the [OpenAI API](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) we completely bypass the need for any training. Instead, we tap directly into the vast pre-training knowledge of GPT and use a prompt to instruct the model to classify the news articles. This method allows us to achieve high performance without a single training loop.
+By leveraging the [OpenAI API](https://openai.com/index/gpt-4-research/) we completely bypass the need for any training. Instead, we tap directly into the vast pre-training knowledge of GPT and use a prompt to instruct the model to classify the news articles. This method allows us to achieve high performance without a single training loop.
 
 This Python snippet defines a function, get_api_metrics_data, which performs zero-shot classification on a given news article using the OpenAI GPT-4o-mini model. It uses a system prompt to enforce classification into one of three specified categories (simplified_names) and is configured to return log probabilities for the top tokens (logprobs=True, top_logprobs=3) [OpenAI LogProb cookbook](https://cookbook.openai.com/examples/using_logprobs). 
 
