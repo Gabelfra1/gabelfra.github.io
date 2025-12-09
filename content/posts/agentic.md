@@ -1,7 +1,7 @@
 ---
 author: "Francesco Gabellini"
 title: "Building effective agents"
-date: "2025-12-12"
+date: "2025-12-08"
 tags: 
 - LLM
 - Agent
