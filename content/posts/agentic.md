@@ -10,7 +10,7 @@ tags:
 ### Agentic pattern
 
 We're doing something different today. 
-Instead of a typical article, this is a code along tutorial based on Anthropic's excellent guide to agentic patterns : [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents ).
+Instead of a typical article, this is a code along tutorial based on Anthropic's foundational blogpost on agentic patterns : [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents ).
 
 Replicating this exercise is possible with any LLM provider that is compatible with the [Openai Client library](http://platform.openai.com/docs/libraries).
 
@@ -34,7 +34,6 @@ state = {
 }
 # --- Functions ---
 def generate_joke(topic: str) -> str:
-
     response = client.chat.completions.create(
         model=model_name,
         messages=[{"role": "user", "content": f"Write a joke about {topic} with just single a sentence"}],
@@ -42,7 +41,6 @@ def generate_joke(topic: str) -> str:
     return response.choices[0].message.content
 
 def improve_joke(joke: str) -> str:
-
     response = client.chat.completions.create(
         model=model_name,
         messages=[{"role": "user", "content": f"Make this joke funnier by adding wordplay or puns: {joke}"}],
@@ -50,7 +48,6 @@ def improve_joke(joke: str) -> str:
     return response.choices[0].message.content
 
 def polish_joke(joke: str) -> str:
-
     response = client.chat.completions.create(
         model=model_name,
         messages=[{"role": "user", "content": f"""
@@ -71,7 +68,6 @@ def check_punchline(joke: str) -> bool:
     return joke.count("?") >= 1
 
 # --- Workflow Execution ---
-
 def run_workflow(topic: str):
 
     state["topic"] = topic
@@ -136,35 +132,28 @@ def llm_call_router(state: State) -> dict:
     return {"decision": decision["step"]}
 # --- Nodes ---
 def llm_call_story(state: State) -> dict:
-
     response = client.chat.completions.create(
         model=model_name",
         messages=[{"role": "user", "content": f"Write a story about: {state['input']}"}],
     )
-
     return {"output": response.choices[0].message.content}
 
 def llm_call_joke(state: State) -> dict:
-
     response = client.chat.completions.create(
         model=model_name",
         messages=[{"role": "user", "content": f"Write a joke about: {state['input']}"}],
     )
-
     return {"output": response.choices[0].message.content}
 
 def llm_call_poem(state: State) -> dict:
-
     response = client.chat.completions.create(
         model=model_name",
         messages=[{"role": "user", "content": f"Write a poem about: {state['input']}"}],
     )
-
     return {"output": response.choices[0].message.content}
 
 # --- Routing Logic ---
 def route_decision(state: State) -> str:
-
     if state["decision"] == "story":
         return "story"
     elif state["decision"] == "joke":
@@ -174,7 +163,6 @@ def route_decision(state: State) -> str:
 
 # --- Workflow Execution ---
 def run_workflow(user_input: str):
-
     state: State = {"input": user_input, "decision": "", "output": ""}
     # Step 1: Route
     route_result = llm_call_router(state)
@@ -188,6 +176,7 @@ def run_workflow(user_input: str):
         state.update(llm_call_poem(state))
     return state
 
+# --- Run ---
 result = run_workflow("Write me a short story about cats at work")
 ```
 
@@ -268,7 +257,6 @@ class State(TypedDict):
 
 # --- Schema for evaluation ---
 def llm_call_evaluator(state: State) -> dict:
-
     response = client.chat.completions.create(
         model=model_name,
         messages=[
@@ -297,7 +285,6 @@ def llm_call_evaluator(state: State) -> dict:
 
 # --- Joke Generator ---
 def llm_call_generator(state: State) -> dict:
-    
     if state.get("feedback"):
         prompt = f"Write a joke about {state['topic']} but improve it based on this feedback: {state['feedback']}"
     else:
@@ -325,6 +312,7 @@ def run_workflow(topic: str, max_loops: int = 3):
             print("Joke rejected, improving...")
     return state
 
+# --- Run ---
 result = run_workflow("cats at work")
 ```
 
@@ -389,7 +377,6 @@ tools = [
         }
     }
 ]
-
 # --- Map tool names to Python functions ---
 tools_by_name = {
     "multiply": multiply,
@@ -405,11 +392,10 @@ def run_agent(user_input: str, max_iterations: int = 5):
     ]
     for i in range(max_iterations):
         response = client.chat.completions.create(
-            model=f"vertex_ai/{model_name}",
+            model=model,
             messages=messages,
             tools=tools,
-            tool_choice="auto",
-            **config_dict
+            tool_choice="auto"
         )
         last_message = response.choices[0].message
         tool_calls = last_message.tool_calls
@@ -435,6 +421,7 @@ def run_agent(user_input: str, max_iterations: int = 5):
             print(f"\nFinal answer after {i+1} iterations: {last_message.content}")
             return last_message.content
     return "Max iterations reached without a final answer."
+# --- Run ---
 answer = run_agent("Please multiply 3 and 4 and divide the result by 2")
 ```
 
