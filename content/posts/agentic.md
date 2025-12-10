@@ -46,21 +46,18 @@ state = {
 # --- Functions ---
 def generate_joke(topic: str) -> str:
     response = client.chat.completions.create(
-        model=model_name,
         messages=[{"role": "user", "content": f"Write a joke about {topic} with just single a sentence"}],
     )
     return response.choices[0].message.content
 
 def improve_joke(joke: str) -> str:
     response = client.chat.completions.create(
-        model=model_name,
         messages=[{"role": "user", "content": f"Make this joke funnier by adding wordplay or puns: {joke}"}],
     )
     return response.choices[0].message.content
 
 def polish_joke(joke: str) -> str:
     response = client.chat.completions.create(
-        model=model_name,
         messages=[{"role": "user", "content": f"""
                 Write a short, funny joke in the following format:
                 Why did [subject] [action]?
@@ -110,7 +107,6 @@ class State(TypedDict):
 # --- Router using structured output ---
 def llm_call_router(state: State) -> dict:
     response = client.chat.completions.create(
-        model=model_name",
         messages=[
             {"role": "system", "content": "Route the input to story, joke, or poem based on the user's request."},
             {"role": "user", "content": state["input"]},
@@ -137,21 +133,18 @@ def llm_call_router(state: State) -> dict:
 # --- Nodes ---
 def llm_call_story(state: State) -> dict:
     response = client.chat.completions.create(
-        model=model_name",
         messages=[{"role": "user", "content": f"Write a story about: {state['input']}"}],
     )
     return {"output": response.choices[0].message.content}
 
 def llm_call_joke(state: State) -> dict:
     response = client.chat.completions.create(
-        model=model_name",
         messages=[{"role": "user", "content": f"Write a joke about: {state['input']}"}],
     )
     return {"output": response.choices[0].message.content}
 
 def llm_call_poem(state: State) -> dict:
     response = client.chat.completions.create(
-        model=model_name",
         messages=[{"role": "user", "content": f"Write a poem about: {state['input']}"}],
     )
     return {"output": response.choices[0].message.content}
@@ -204,7 +197,6 @@ class State(TypedDict):
 # --- LLM Call Functions ---
 def call_llm(prompt: str) -> str:
     response = client.chat.completions.create(
-        model=model_name,
         messages=[{"role": "user", "content": prompt}],
     )
     return response.choices[0].message.content
@@ -258,7 +250,6 @@ class State(TypedDict):
 # --- Schema for evaluation ---
 def llm_call_evaluator(state: State) -> dict:
     response = client.chat.completions.create(
-        model=model_name,
         messages=[
             {"role": "system", "content": "Grade the joke as funny or not funny and provide feedback if needed."},
             {"role": "user", "content": f"Joke: {state['joke']}"}
@@ -288,7 +279,6 @@ def llm_call_generator(state: State) -> dict:
     else:
         prompt = f"Write a joke about {state['topic']}"
     response = client.chat.completions.create(
-        model=model_name,
         messages=[{"role": "user", "content": prompt}],
     )
     return {"joke": response.choices[0].message.content}
@@ -426,4 +416,4 @@ answer = run_agent("Please multiply 3 and 4 and divide the result by 2")
 
 ### Conclusion 
 
-I hope these examples have helped the reader realise the simplicity behind the patterns available for implementing agentic workflows. While using higher-level packages like [LangChain](https://docs.langchain.com/oss/python/langgraph/workflows-agents) offers 'shorter' implementation methods, this often obscures the underlying details. To truly understand these core concepts, I believe a simpler approach using just the API and Python is most effective.
+I hope these examples have helped the reader realise the simplicity behind the patterns for implementing agentic workflows. While using higher-level packages like [LangChain](https://docs.langchain.com/oss/python/langgraph/workflows-agents) offers 'shorter' implementation methods, this often obscures the underlying details. To truly understand these core concepts, I believe a simpler approach using just the API and basic Python is most effective.
