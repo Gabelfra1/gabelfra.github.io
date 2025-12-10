@@ -12,9 +12,20 @@ tags:
 We're doing something different today. 
 Instead of a typical article, this is a code along tutorial based on Anthropic's foundational blogpost on agentic patterns : [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents ).
 
-Replicating this exercise is possible with any LLM provider that is compatible with the [Openai Client library](http://platform.openai.com/docs/libraries).
-
 The objective of this article is to demystify the complexity of agentic workflows by presenting a simple and clear Python implementation of the core concepts defined in the Anthropic article.
+
+### 0) Set-up
+Replicating this exercise is possible with any LLM provider that is compatible with the [Openai Client library](http://platform.openai.com/docs/libraries) and the set-up is minimal.
+We just need the LLM client, pydantic for [structured output](https://ai.pydantic.dev/output/) and json to parse the response. 
+
+```python 
+# --- Libraries ---
+import openai
+from pydantic import BaseModel
+from pydantic import BaseModel, Field
+import json
+from typing import Literal, TypedDict
+```
 
 ### 1) Prompt chaining
 
