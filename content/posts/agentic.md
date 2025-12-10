@@ -1,7 +1,7 @@
 ---
 author: "Francesco Gabellini"
 title: "Building effective agents"
-date: "2025-12-08"
+date: "2025-12-10"
 tags: 
 - LLM
 - Agent
@@ -20,7 +20,7 @@ The objective of this article is to demystify the complexity of agentic workflow
 
 **Prompt chaining decomposes a task into a sequence of steps, where each LLM call processes the output of the previous one**.
 
-In this simple chain we are going to create a senquence of steps (generate_joke,improve_joke,polish_joke) in order to generate an output (a joke).
+In this simple example we are going to create a chain (sequence) of prompts (generate_joke,improve_joke,polish_joke) in order to generate an output (a joke).
 
 The chain represents the simplest workflow pattern, marking the first step in complexity beyond standard one-shot prompting for generating answers.
 
@@ -51,15 +51,10 @@ def polish_joke(joke: str) -> str:
     response = client.chat.completions.create(
         model=model_name,
         messages=[{"role": "user", "content": f"""
-
                 Write a short, funny joke in the following format:
-
                 Why did [subject] [action]?
-
                 To [funny reason related to the subject]!
-
                 The joke should be based on the following : {joke}
-
                 """}],
     )
     return response.choices[0].message.content
@@ -69,7 +64,6 @@ def check_punchline(joke: str) -> bool:
 
 # --- Workflow Execution ---
 def run_workflow(topic: str):
-
     state["topic"] = topic
     state["joke"] = generate_joke(topic)
     state["improved_joke"] = improve_joke(state["joke"])
@@ -82,7 +76,6 @@ def run_workflow(topic: str):
 # --- Run ---
 result = run_workflow("cats at work")
 ```
-
 
 ### 2) Routing
 
@@ -180,7 +173,6 @@ def run_workflow(user_input: str):
 result = run_workflow("Write me a short story about cats at work")
 ```
 
-
 ### 3) Parallelization
 
 **Breaking a task into independent subtasks run in parallel**.
@@ -200,7 +192,6 @@ class State(TypedDict):
 
 # --- LLM Call Functions ---
 def call_llm(prompt: str) -> str:
-
     response = client.chat.completions.create(
         model=model_name,
         messages=[{"role": "user", "content": prompt}],
@@ -217,17 +208,15 @@ def call_llm_3(state: State) -> dict:
     return {"poem": call_llm(f"Write a poem about {state['topic']}")}
 
 def aggregator(state: State) -> dict:
-
     combined = f"Here's a story, joke, and poem about {state['topic']}!\n\n"
     combined += f"STORY:\n{state['story']}\n\n"
     combined += f"JOKE:\n{state['joke']}\n\n"
     combined += f"POEM:\n{state['poem']}"
     return {"combined_output": combined}
-# --- Workflow Execution ---
 
+# --- Workflow Execution ---
 def run_workflow(topic: str) -> State:
     state: State = {"topic": topic, "joke": "", "story": "", "poem": "", "combined_output": ""}
-
     # Run tasks in parallel (or sequentially for simplicity)
     state.update(call_llm_1(state))
     state.update(call_llm_2(state))
@@ -281,15 +270,12 @@ def llm_call_evaluator(state: State) -> dict:
     result = json.loads(response.choices[0].message.content)
     return {"funny_or_not": result["grade"], "feedback": result["feedback"]}
 
- 
-
 # --- Joke Generator ---
 def llm_call_generator(state: State) -> dict:
     if state.get("feedback"):
         prompt = f"Write a joke about {state['topic']} but improve it based on this feedback: {state['feedback']}"
     else:
         prompt = f"Write a joke about {state['topic']}"
-
     response = client.chat.completions.create(
         model=model_name,
         messages=[{"role": "user", "content": prompt}],
@@ -297,7 +283,7 @@ def llm_call_generator(state: State) -> dict:
     return {"joke": response.choices[0].message.content}
 
 # --- Workflow ---
-def run_workflow(topic: str, max_loops: int = 3):
+def run_workflow(topic: str, max_loops: int = 5):
     state: State = {"topic": topic, "joke": "", "feedback": "", "funny_or_not": ""}
     for i in range(max_loops):
         # Generate joke
@@ -320,7 +306,7 @@ result = run_workflow("cats at work")
 
 **Agents are emerging in key capabilities—understanding complex inputs, engaging in reasoning and planning, using tools reliably, and recovering from errors**.
 
-Finally, we demonstrate an example of a truly autonomous agent. Though limited to arithmetic tools in this case, the agent can receive a task, reason, plan which tools to use, execute those tools, and autonomously halt the reasoning process when it is ready to generate the final answer to the user.
+Finally, we demonstrate an example of a truly autonomous agent. Though limited to arithmetic tools in this case, the agent can receive a task, reason, plan which tools to use, execute those tools, and autonomously stop the reasoning process when it is ready to generate the final answer to the user.
 
 <figure>
   <img src="../../images/anthropic.png" 
@@ -338,7 +324,7 @@ def add(a: int, b: int) -> int:
 def divide(a: int, b: int) -> float:
     return a / b
 
-# --- Define tool schemas for OpenAI ---
+# --- Define tool schemas ---
 tools = [
     {
         "name": "multiply",
@@ -385,6 +371,7 @@ tools_by_name = {
 }
 import json
 
+# --- Workflow ---
 def run_agent(user_input: str, max_iterations: int = 5):
     messages = [
         {"role": "system", "content": "You are a helpful assistant tasked with performing arithmetic on a set of inputs."},
