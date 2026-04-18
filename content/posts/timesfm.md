@@ -53,9 +53,10 @@ The problem is worse than just tedium: **none of this work transfers between pro
 
 The obvious hope was that deep learning would do what it did for images and text: learn a universal representation and make the hand-crafted pipeline obsolete. It did not work out that way.
 
-The M4 competition (2018), covering 100,000 real-world series, was the first large-scale empirical test. The winner was a hybrid ES-RNN — not a pure deep learning model, but a classical Exponential Smoothing model with an RNN on top. Pure neural methods consistently underperformed compared to statistical baselines that had been around for decades.
+The M4 competition (2018), covering 100,000 real-world series, was the first large-scale empirical test. The winner was a hybrid ES-RNN, not a pure deep learning model, but a classical Exponential Smoothing model with an RNN on top. Pure neural methods consistently underperformed compared to statistical baselines that had been around for decades.
 
-The M5 and M6 competitions confirmed the pattern. The use of LightGBM with careful feature engineering repeatedly beat recurrent and attention-based architectures. The community largely concluded that deep learning was simply too cumbersome to train on short series, too prone to overfitting, and too sensitive to architecture choices to be worth the cost of training.
+The M5 and M6 competitions confirmed the pattern. The use of LightGBM with careful feature engineering repeatedly beat deep learning architectures. 
+The community largely concluded that deep learning was simply too cumbersome to train on short series, too prone to overfitting, and too sensitive to architecture choices to be worth the cost of training.
 
 The fundamental problem was that every deep learning model still needed to be trained from scratch on each dataset. It was essentially a more expensive version of the same ritual.
 
@@ -63,7 +64,7 @@ The fundamental problem was that every deep learning model still needed to be tr
 
 Google Research published [A decoder-only foundation model for time-series forecasting](https://arxiv.org/abs/2310.10688) in 2023.
 I've noticed the advances in transformer models when they started to creep into the industry I work in, aka banking, but only recently, while reading the paper [PRAGMA: Revolut Foundation Model](https://arxiv.org/html/2604.08649v1), did it click. 
-The core idea is simple: pre-train a large transformer on an enormous and diverse corpus of time series data, then use it zero-shot on any new series — no fine-tuning, no hyperparameter search, no statistical tests.
+The core idea is simple: pre-train a large transformer on an enormous and diverse corpus of time series data, then use it zero-shot on any new series — no hyperparameter search, no statistical tests.
 
 **TimesFM is to forecasting what GPT was to NLP: a single pre-trained model that generalises across tasks it has never seen.**
 
