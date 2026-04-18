@@ -1,6 +1,6 @@
 ---
 author: "Francesco Gabellini"
-title: "TimesFM: can GPT be useful in time series forecasting ?"
+title: "Can GPT be useful in time series forecasting ?"
 date: "2026-04-18"
 tags: 
 - Time Series
@@ -67,25 +67,6 @@ The core idea is  simple: pre-train a large transformer on an enormous and diver
 
 **TimesFM is to forecasting what GPT was to NLP: a single pre-trained model that generalises across tasks it has never seen.**
 
-The model was trained on over 100 billion time points drawn from Google Trends, Wikipedia pageviews, and a large synthetic corpus designed to cover a wide range of temporal patterns. The training set is intentionally heterogeneous — the model is forced to learn what patterns look like in general, not what patterns look like in a specific domain.
-
-The architecture borrows the patch-based tokenisation used in Vision Transformers. Rather than treating each time step as a token (which produces very long sequences and loses local structure), the series is split into fixed-length patches:
-
-```
-Series:   [x1, x2, ..., x512]
-Patches:  [x1..x32] [x33..x64] ... [x481..x512]
-                ↓         ↓               ↓
-            token_1   token_2  ...    token_16
-                           ↓
-                    Transformer decoder
-                           ↓
-                    forecast patch
-```
-
-Each patch is projected into an embedding, the decoder attends over the patch sequence, and the output is a forecast patch. The model learns temporal structure at the patch level rather than the point level, which both reduces sequence length and forces the model to capture local dynamics explicitly.
-
-### Using it is three lines of code
-
 This is the part that matters for practitioners. After all the machinery described above — stationarity tests, seasonal detection, AIC search, Optuna — the TimesFM inference path is:
 
 ```python
@@ -140,13 +121,17 @@ SARIMA requires running the full stationarity and order-selection pipeline befor
 
 The result: **TimesFM achieves competitive MAE without a single line of training code**, while SARIMA and LightGBM each needed a bespoke calibration pipeline just to participate.
 
+<figure>
+  <img src="../../images/timesfm_cv_mae.png" alt="time_series_cv">
+</figure>
+
+
+
 ### Why this could democratise forecasting
 
-TimesFM collapses the forecasting stack. A developer with no background in time series statistics can load the model, pass indataframe, and get a  probabilistic forecast in seconds. The statistical expertise is baked into the weights, accumulated during pre-training on a corpus no individual practitioner could ever assamble.
+TimesFM collapses the forecasting stack. A developer with no background in time series statistics can load the model, pass in a dataframe, and get a  probabilistic forecast in seconds. 
 
 This mirrors exactly what happened to NLP. Before the transformer era, building a production sentiment classifier for customer service calls meant curating internal transcriptions, collecting customer feedback labels, engineering linguistic features, selecting and tuning a model, and repeating this process for every new business domain or language. After GPT, you load a pre-trained model, pass in your call transcripts, and get sentiment predictions without annotation pipelines. The barrier to entry collapsed by an order of magnitude, and the volume of NLP applications in production exploded.
-
-**Time series is now at the same inflection point.** The M4, M5, and M6 competitions asked which model wins when you train everything from scratch. That question is becoming less interesting. The new question is: how much can a foundation model do before you ever touch the data?
 
 ### The limits are real
 
@@ -160,4 +145,4 @@ The pattern in machine learning over the past decade has been consistent: wherev
 
 Time series was resistant longer than most because the data is messier, the frequency and domain vary wildly, and the benchmarks were designed around the assumption that every model would be trained from scratch. TimesFM, and the family of models following it, challenges that assumption at its root.
 
-Whether TimesFM specifically becomes the standard, or is surpassed by the next generation of temporal foundation models, the direction is now clear. The era of bespoke per-series pipelines is ending.
+Whether TimesFM specifically becomes the standard, or is surpassed by the next generation of temporal foundation models, the direction is now clear. The era of bespoke per-series models is ending.
