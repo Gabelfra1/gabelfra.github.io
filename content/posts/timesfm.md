@@ -1,6 +1,6 @@
 ---
 author: "Francesco Gabellini"
-title: "Can GPT be useful in time series forecasting ?"
+title: "Do Foundational Models Actually Work for Forecasting ?"
 date: "2026-04-18"
 tags: 
 - Time Series
