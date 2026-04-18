@@ -1,6 +1,6 @@
 ---
 author: "Francesco Gabellini"
-title: "Do Foundational Models Actually Work for Forecasting ?"
+title: "Do Foundational Models Actually Work for Forecasting?"
 date: "2026-04-18"
 tags: 
 - Time Series
@@ -11,9 +11,9 @@ tags:
 ### Traditional forecasting
 
 Every forecasting practitioner, from a math/stats background, knows the ritual.
-You get a new series. You run the ADF test,you differentiate and hopefully the series is stationary.You plot the ACF and PACF, count the significant lags, make a guess at `p` and `q`, run a grid search over AIC, wait, then do it all again with a seasonal component once you have figured out the period.
+You get a new series. You run the ADF test, you differentiate and hopefully the series is stationary. You plot the ACF and PACF, count the significant lags, make a guess at `p` and `q`, run a grid search over AIC, wait, then do it all again with a seasonal component once you have figured out the period.
 
-For the not initiated a more in dephs explanation in the bible of forecasting : 
+For the uninitiated, a more in-depth explanation in the bible of forecasting: 
 [Forecasting: Principles and Practice](https://otexts.com/fpp3/)
 
 ```python
@@ -63,7 +63,7 @@ The fundamental problem was that every deep learning model was still trained fro
 
 Google Research published [A decoder-only foundation model for time-series forecasting](https://arxiv.org/abs/2310.10688) in 2023.
 I've noticed the advances in transformer models when they started to creep into the industry I work in, aka banking. Only now, while reading [PRAGMA: Revolut Foundation Model](https://arxiv.org/html/2604.08649v1), another paper for another time, did it click. 
-The core idea is  simple: pre-train a large transformer on an enormous and diverse corpus of time series data, then use it zero-shot on any new series — no fine-tuning, no hyperparameter search, no statistical tests.
+The core idea is simple: pre-train a large transformer on an enormous and diverse corpus of time series data, then use it zero-shot on any new series — no fine-tuning, no hyperparameter search, no statistical tests.
 
 **TimesFM is to forecasting what GPT was to NLP: a single pre-trained model that generalises across tasks it has never seen.**
 
@@ -129,7 +129,7 @@ The result: **TimesFM achieves competitive MAE without a single line of training
 
 ### Why this could democratise forecasting
 
-TimesFM collapses the forecasting stack. A developer with no background in time series statistics can load the model, pass in a dataframe, and get a  probabilistic forecast in seconds. 
+TimesFM collapses the forecasting stack. A developer with no background in time series statistics can load the model, pass in a dataframe, and get a probabilistic forecast in seconds. 
 
 This mirrors exactly what happened to NLP. Before the transformer era, building a production sentiment classifier for customer service calls meant curating internal transcriptions, collecting customer feedback labels, engineering linguistic features, selecting and tuning a model, and repeating this process for every new business domain or language. After GPT, you load a pre-trained model, pass in your call transcripts, and get sentiment predictions without annotation pipelines. The barrier to entry collapsed by an order of magnitude, and the volume of NLP applications in production exploded.
 
