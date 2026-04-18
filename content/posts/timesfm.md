@@ -10,7 +10,7 @@ tags:
 
 ### Traditional forecasting
 
-Every forecasting practitioner,from a math/stats background, knows the ritual.
+Every forecasting practitioner, from a math/stats background, knows the ritual.
 You get a new series. You run the ADF test,you differentiate and hopefully the series is stationary.You plot the ACF and PACF, count the significant lags, make a guess at `p` and `q`, run a grid search over AIC, wait, then do it all again with a seasonal component once you have figured out the period.
 
 For the not initiated a more in dephs explanation in the bible of forecasting : 
