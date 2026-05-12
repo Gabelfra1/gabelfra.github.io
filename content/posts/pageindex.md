@@ -68,33 +68,34 @@ The LLM sees this structure with the summaries and can reason: *"the question is
 
 ### The Code
 
-Setup is minimal. You need a PageIndex and an LLM client.
+Setup is minimal. Clone the repo, install dependencies, and set your LLM key. 
+Then generate the tree locally from a PDF — this writes a JSON file to `./results/`:
+
+```bash
+python3 run_pageindex.py --pdf_path document.pdf \
+    --if-add-node-summary yes \
+    --if-add-node-text yes
+```
+
+Load the result and set up your LLM client:
 
 ```python
-from pageindex import PageIndexClient
 import pageindex.utils as utils
 import openai, json
 
-pi_client = PageIndexClient(api_key="YOUR_PAGEINDEX_API_KEY")
+with open("results/document_structure.json") as f:
+    tree = json.load(f)
 
-async def call_llm(prompt, model="YOUR_LLM", temperature=0):
-    client = openai.AsyncOpenAI(api_key="YOUR_OPENAI_API_KEY")
+utils.print_tree(tree)
+
+def call_llm(prompt, model="gpt-4.1", temperature=0):
+    client = openai.AsyncOpenAI()
     response = await client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
         temperature=temperature
     )
     return response.choices[0].message.content.strip()
-```
-
-Submit a document and get the tree back:
-
-```python
-doc_id = pi_client.submit_document("document.pdf")["doc_id"]
-
-if pi_client.is_retrieval_ready(doc_id):
-    tree = pi_client.get_tree(doc_id, node_summary=True)['result']
-    utils.print_tree(tree)
 ```
 
 At query time, strip the full text out of the tree, show it to the LLM, and ask for the relevant nodes:
