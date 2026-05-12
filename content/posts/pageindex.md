@@ -68,8 +68,8 @@ The LLM sees this structure with the summaries and can reason: *"the question is
 
 ### The Code
 
-Setup is minimal. Clone the repo, install dependencies, and set your LLM key. 
-Then generate the tree locally from a PDF — this writes a JSON file to `./results/`:
+Setup is minimal : Clone, install dependencies, and set your LLM key. 
+Then generate the tree locally from a PDF :
 
 ```bash
 python3 run_pageindex.py --pdf_path document.pdf \
