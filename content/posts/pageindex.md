@@ -191,7 +191,7 @@ For the use cases where it fits: long structured documents, regulatory filings, 
 
 PageIndex is a good example of a retrieval approach that optimises for the right thing. Not just accuracy, but **explainability**. The retrieval path is a reasoning trace. The chunks are coherent sections. The index is a plain JSON file.
 
-None of this is magic. It is essentially the same thing a well-organised sutdent does when they open a textbook. The insight is just recognising that human information retrieval is already an excellent algorithm, and that replicating it is could be better than replacing it with cosine similarity.
+None of this is magic. It is essentially the same thing a well-organised student does when they open a textbook. The insight is just recognising that human information retrieval is already an excellent algorithm, and that replicating it is could be better than replacing it with cosine similarity.
 
 The official repo and cookbook are at [github.com/VectifyAI/PageIndex](https://github.com/VectifyAI/PageIndex) if you want to run the full notebook.
 
