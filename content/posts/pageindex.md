@@ -11,7 +11,7 @@ tags:
 
 Standard RAG has a transparency problem, and it's not one that shows up in benchmark numbers.
 
-When a business user asks *"why did the system return this paragraph and not that one?"*, the honest answer is: *"because the cosine similarity was 0.83 instead of 0.79."* That answer is technically correct and completely useless. Nobody outside of an ML team reasons about document retrieval in terms of vector distances. They reason about sections, chapters, topics, and arguments.
+When a user asks *"why did the system return this paragraph and not that one?"*, the honest answer is: *"because the cosine similarity was 0.83 instead of 0.79."* That answer is technically correct and completely useless. Nobody outside of an ML team reasons about document retrieval in terms of vector distances. They reason about sections, chapters, topics, and arguments.
 
 This gap between how retrieval systems work and how humans think about information lookup creates a problem: the users either accept the result blindly or reject the whole system because they can't audit it. Neither is good.
 
@@ -21,7 +21,7 @@ This gap between how retrieval systems work and how humans think about informati
 
 ### How Humans Actually Look Things Up
 
-If you remember searching for something in a physical library before Google,I am not that old, you remember the process intuitively. You didn't scan every page of every book. You:
+If you remember searching for something in a physical library before Google, I do, you remember the process intuitively. You didn't scan every page of every book. You:
 
 1. Found the right book by subject
 2. Opened the table of contents
@@ -135,8 +135,6 @@ relevant_content = "\n\n".join(node_map[nid]["text"] for nid in node_list)
 answer = await call_llm(f"Answer based on context:\n\nQuestion: {query}\nContext: {relevant_content}")
 ```
 
-The `thinking` field in the LLM output is not just a debugging artifact — it's the explanation that you can surface directly to end users. *"I retrieved Section 4.3 because the question was about training procedure and that node's summary explicitly covers the optimizer and learning rate schedule."* That's the kind of trace a business analyst can actually read.
-
 ---
 
 ### Stateless by Design, Storable if Needed
@@ -155,7 +153,7 @@ with open("doc_tree.json") as f:
     tree = json.load(f)
 ```
 
-This is meaningful in practice. Vector databases introduce a whole infrastructure layer: embedding models, index management, dimension consistency, update pipelines. PageIndex's index is a JSON file. It integrates with whatever you already have,an S3 bucket, a Redis cache,just some memory. No additional infrastructure required.
+This is meaningful in practice. Vector databases introduce a whole infrastructure layer: embedding models, database extensions, fancy fusion algorithm. PageIndex's index is a JSON file. It integrates with whatever you already have,an S3 bucket, a Redis cache,just some memory. No additional infrastructure required.
 
 ---
 
